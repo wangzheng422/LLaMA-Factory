@@ -10,7 +10,7 @@ lora_target: all
 
 ### dataset
 dataset: identity,alpaca_en_demo
-template: llama3
+template: llama2
 cutoff_len: 512
 max_samples: 10
 overwrite_cache: true
