@@ -31,9 +31,6 @@ RUN pip config set global.index-url "$PIP_INDEX" && \
 # Copy the rest of the application into the image
 COPY . /app
 
-# copy the mini llama
-COPY huggingface/Maykeye-TinyLLama-v0 /data/huggingface/Maykeye-TinyLLama-v0
-
 # Install the LLaMA Factory
 RUN EXTRA_PACKAGES="metrics"; \
     if [ "$INSTALL_BNB" == "true" ]; then \
@@ -65,6 +62,10 @@ RUN pip uninstall -y transformer-engine flash-attn && \
 
 # Set up volumes
 # VOLUME [ "/root/.cache/huggingface", "/root/.cache/modelscope", "/app/data", "/app/output" ]
+
+# copy the mini llama
+COPY huggingface/Maykeye-TinyLLama-v0 /data/huggingface/Maykeye-TinyLLama-v0
+
 
 # Expose port 7860 for the LLaMA Board
 ENV GRADIO_SERVER_PORT 7860
