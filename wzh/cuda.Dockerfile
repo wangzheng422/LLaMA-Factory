@@ -35,6 +35,7 @@ COPY . /app
 
 # copy the mini llama
 # 将主机上的 /path/to/your/external/directory 挂载到容器内的 /external_dir
+RUN mkdir -p /external_dir
 RUN --mount=type=bind,source=/data/huggingface/Maykeye-TinyLLama-v0,target=/external_dir \
     mkdir -p /data/huggingface/Maykeye-TinyLLama-v0 && \
     cp -r /external_dir/. /data/huggingface/Maykeye-TinyLLama-v0
