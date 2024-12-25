@@ -38,7 +38,7 @@ COPY . /app
 RUN mkdir -p /external_dir
 RUN --mount=type=bind,source=/data/huggingface/Maykeye-TinyLLama-v0,target=/external_dir \
     mkdir -p /data/huggingface/Maykeye-TinyLLama-v0 && \
-    cp -r /external_dir/. /data/huggingface/Maykeye-TinyLLama-v0
+    cp -r /external_dir/. /data/huggingface/Maykeye-TinyLLama-v0/
 
 # Install the LLaMA Factory
 RUN EXTRA_PACKAGES="metrics"; \
