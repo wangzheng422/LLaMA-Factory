@@ -3,7 +3,7 @@
 .github
 .venv
 cache
-data
+# data
 docker
 saves
 hf_cache
