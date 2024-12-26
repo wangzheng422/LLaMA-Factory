@@ -72,7 +72,7 @@ RUN pip uninstall -y transformer-engine flash-attn && \
 COPY huggingface/Maykeye-TinyLLama-v0 /data/huggingface/
 
 # add pkg
-RUN apt update -y && apt install -y iproute2
+# RUN apt update -y && apt install -y iproute2
 
 # Expose port 7860 for the LLaMA Board
 ENV GRADIO_SERVER_PORT 7860
