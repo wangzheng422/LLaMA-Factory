@@ -41,3 +41,4 @@ eval_steps: 500
 
 ### hack for cpu
 ddp_find_unused_parameters: False
+# lora_rank: 1
