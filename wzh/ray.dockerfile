@@ -74,6 +74,10 @@ COPY huggingface/Maykeye-TinyLLama-v0 /data/huggingface/
 # add pkg
 # RUN apt update -y && apt install -y iproute2
 
+# revert user back
+RUN chown -R 1001:1001 /app /data
+USER 1001
+
 # Expose port 7860 for the LLaMA Board
 ENV GRADIO_SERVER_PORT 7860
 EXPOSE 7860
