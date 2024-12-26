@@ -66,6 +66,8 @@ RUN pip uninstall -y transformer-engine flash-attn && \
 # copy the mini llama
 COPY huggingface/Maykeye-TinyLLama-v0 /data/huggingface/Maykeye-TinyLLama-v0
 
+# add pkg
+RUN apt update -y && apt install -y iproute2
 
 # Expose port 7860 for the LLaMA Board
 ENV GRADIO_SERVER_PORT 7860
