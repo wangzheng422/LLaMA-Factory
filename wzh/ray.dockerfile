@@ -20,7 +20,7 @@ ARG PIP_INDEX=https://pypi.org/simple
 WORKDIR /app
 
 # install pytorch 
-RUN pip install torch==2.0.1+cu121 torchvision==0.15.0+cu121 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu121
+RUN pip install torch==2.5.1+cu121 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu121
 
 # Install the requirements
 COPY requirements.txt /app
