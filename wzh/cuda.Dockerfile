@@ -64,7 +64,7 @@ RUN pip uninstall -y transformer-engine flash-attn && \
 # VOLUME [ "/root/.cache/huggingface", "/root/.cache/modelscope", "/app/data", "/app/output" ]
 
 # copy the mini llama
-COPY huggingface/Maykeye-TinyLLama-v0 /data/huggingface/Maykeye-TinyLLama-v0
+COPY huggingface/Maykeye-TinyLLama-v0 /data/huggingface/
 
 # add pkg
 RUN apt update -y && apt install -y iproute2
