@@ -16,6 +16,10 @@ ARG INSTALL_HQQ=false
 ARG INSTALL_EETQ=false
 ARG PIP_INDEX=https://pypi.org/simple
 
+# set user to root
+# will change back to 1001 later
+USER root
+
 # Set the working directory
 WORKDIR /app
 
