@@ -75,7 +75,7 @@ COPY huggingface/Maykeye-TinyLLama-v0 /data/huggingface/
 # RUN apt update -y && apt install -y iproute2
 
 # revert user back
-RUN chown -R 1000:0 /app /data /opt/app-root
+RUN chown -R 1000:0 /app /data
 USER 1000
 
 # Expose port 7860 for the LLaMA Board
