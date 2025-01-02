@@ -17,14 +17,16 @@ ARG INSTALL_EETQ=false
 ARG PIP_INDEX=https://pypi.org/simple
 
 # set user to root
-# will change back to 1001 later
+# will change back to 1000 later
 USER root
+
+# install pytorch 
+RUN pip install torch==2.5.1+cu121 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu121
 
 # Set the working directory
 WORKDIR /app
 
-# install pytorch 
-RUN pip install torch==2.5.1+cu121 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu121
+USER 1000
 
 # Install the requirements
 COPY requirements.txt /app
