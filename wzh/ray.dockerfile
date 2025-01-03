@@ -23,10 +23,10 @@ USER root
 # install pytorch 
 RUN pip install torch==2.5.1+cu121 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu121
 
+USER 1000
+
 # Set the working directory
 WORKDIR /app
-
-USER 1000
 
 # Install the requirements
 COPY requirements.txt /app
@@ -77,7 +77,7 @@ COPY huggingface/Maykeye-TinyLLama-v0 /data/huggingface/
 # RUN apt update -y && apt install -y iproute2
 
 # revert user back
-RUN chown -R 1000:0 /app /data
+RUN chown -R 1000:0 /app /data /opt/
 USER 1000
 
 # Expose port 7860 for the LLaMA Board
