@@ -62,7 +62,8 @@ RUN EXTRA_PACKAGES="metrics"; \
     if [ "$INSTALL_EETQ" == "true" ]; then \
         EXTRA_PACKAGES="${EXTRA_PACKAGES},eetq"; \
     fi; \
-    pip install -e ".[$EXTRA_PACKAGES]"
+    pip install -e ".[$EXTRA_PACKAGES]" && \
+    pip install -e ".[$EXTRA_PACKAGES]" --target /opt/app-root/lib64/python3.11/site-packages/;
 
 # Rebuild flash attention
 RUN pip uninstall -y transformer-engine flash-attn && \
