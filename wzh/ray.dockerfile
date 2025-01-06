@@ -71,10 +71,9 @@ RUN pip uninstall -y transformer-engine flash-attn && \
         pip install --no-cache-dir flash-attn --no-build-isolation; \
     fi
 
-# Rebuild flash attention
-RUN pip uninstall -y transformer-engine flash-attn --target /opt/app-root/lib64/python3.11/site-packages/&& \
+RUN pip uninstall -y transformer-engine flash-attn && \
 if [ "$INSTALL_FLASHATTN" == "true" ]; then \
-    pip uninstall -y ninja --target /opt/app-root/lib64/python3.11/site-packages/ && pip install ninja --target /opt/app-root/lib64/python3.11/site-packages/ && \
+    pip uninstall -y ninja && pip install ninja --target /opt/app-root/lib64/python3.11/site-packages/ && \
     pip install --no-cache-dir flash-attn --no-build-isolation --target /opt/app-root/lib64/python3.11/site-packages/; \
 fi
 # Set up volumes
