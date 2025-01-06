@@ -9,7 +9,7 @@ ENV VLLM_WORKER_MULTIPROC_METHOD=spawn
 # Define installation arguments
 ARG INSTALL_BNB=false
 ARG INSTALL_VLLM=false
-ARG INSTALL_DEEPSPEED=false
+ARG INSTALL_DEEPSPEED=true
 ARG INSTALL_FLASHATTN=false
 ARG INSTALL_LIGER_KERNEL=false
 ARG INSTALL_HQQ=false
@@ -22,7 +22,8 @@ USER root
 
 # install pytorch 
 # RUN pip install torch==2.5.1+cu121 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu121 
-RUN pip install torch==2.5.1+cu121 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu121 --target /opt/app-root/lib64/python3.11/site-packages/ --upgrade
+
+# RUN pip install torch==2.5.1+cu121 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu121 --target /opt/app-root/lib64/python3.11/site-packages/ --upgrade
 
 # Set the working directory
 WORKDIR /app
@@ -64,7 +65,6 @@ RUN EXTRA_PACKAGES="metrics"; \
     fi; \
     pip install -e ".[$EXTRA_PACKAGES]" --target /opt/app-root/lib64/python3.11/site-packages/;
 
-RUN pip install deepspeed  --target /opt/app-root/lib64/python3.11/site-packages/ --upgrade 
     # pip install -e ".[$EXTRA_PACKAGES]" && \
 
 # Rebuild flash attention
