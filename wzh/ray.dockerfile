@@ -20,6 +20,8 @@ ARG PIP_INDEX=https://pypi.org/simple
 # will change back to 1000 later
 USER root
 
+RUN dnf install -y /usr/bin/numactl
+
 # install pytorch 
 # RUN pip install torch==2.5.1+cu121 torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu121 
 
