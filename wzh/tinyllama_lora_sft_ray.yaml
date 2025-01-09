@@ -43,6 +43,6 @@ eval_steps: 500
 ### ray
 ray_run_name: tinyllama_sft_lora
 ray_num_workers: 2  # number of GPUs to use
-# resources_per_worker:
-#   GPU: 1
+resources_per_worker:
+  GPU: 0
 placement_strategy: PACK
