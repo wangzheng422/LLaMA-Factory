@@ -63,7 +63,7 @@ class HuggingfaceEngine(BaseEngine):
         try:
             asyncio.get_event_loop()
         except RuntimeError:
-            logger.warning_once("There is no current event loop, creating a new one.")
+            logger.warning_rank0_once("There is no current event loop, creating a new one.")
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
 
@@ -171,7 +171,7 @@ class HuggingfaceEngine(BaseEngine):
             elif not isinstance(value, torch.Tensor):
                 value = torch.tensor(value)
 
-            if torch.is_floating_point(value):
+            if torch.is_floating_point(value):  # cast data dtype for paligemma
                 value = value.to(model.dtype)
 
             gen_kwargs[key] = value.to(model.device)

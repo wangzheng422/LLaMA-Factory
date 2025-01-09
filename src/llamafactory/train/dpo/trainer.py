@@ -29,9 +29,9 @@ from trl.trainer import disable_dropout_in_model
 from typing_extensions import override
 
 from ...extras.constants import IGNORE_INDEX
-from ...extras.packages import is_transformers_version_equal_to_4_46
+from ...extras.packages import is_transformers_version_equal_to_4_46, is_transformers_version_greater_than
 from ..callbacks import SaveProcessorCallback
-from ..trainer_utils import create_custom_optimizer, create_custom_scheduler, get_batch_logps
+from ..trainer_utils import create_custom_optimizer, create_custom_scheduler, get_batch_logps, nested_detach
 
 
 if TYPE_CHECKING:
@@ -50,6 +50,9 @@ class CustomDPOTrainer(DPOTrainer):
         disable_dropout: bool = True,
         **kwargs,
     ):
+        if is_transformers_version_greater_than("4.46"):
+            kwargs["processing_class"] = kwargs.pop("tokenizer")
+
         if disable_dropout:
             disable_dropout_in_model(model)
             if ref_model is not None:
@@ -79,6 +82,7 @@ class CustomDPOTrainer(DPOTrainer):
         self.simpo_gamma = finetuning_args.simpo_gamma
 
         Trainer.__init__(self, model=model, **kwargs)
+        self.model_accepts_loss_kwargs = False  # overwrite trainer's default behavior
         if not hasattr(self, "accelerator"):
             raise AttributeError("Please update `transformers`.")
 
@@ -189,7 +193,7 @@ class CustomDPOTrainer(DPOTrainer):
         Otherwise the average log probabilities.
         """
         if self.finetuning_args.use_ref_model:
-            batch = {k: v.detach().clone() for k, v in batch.items()}  # avoid error
+            batch = nested_detach(batch, clone=True)  # avoid error
 
         all_logits: "torch.Tensor" = model(**batch, return_dict=True, use_cache=False).logits.to(torch.float32)
         all_logps, valid_length = get_batch_logps(logits=all_logits, labels=batch["labels"])
@@ -274,15 +278,14 @@ class CustomDPOTrainer(DPOTrainer):
         self, model: "PreTrainedModel", inputs: Dict[str, "torch.Tensor"], return_outputs: bool = False, **kwargs
     ) -> Union["torch.Tensor", Tuple["torch.Tensor", List["torch.Tensor"]]]:
         r"""
-        Fixes the loss value for transformers 4.46.0.
-        https://github.com/huggingface/transformers/blob/v4.46.0/src/transformers/trainer.py#L3605
+        Fixes the loss value. See https://github.com/huggingface/transformers/pull/35438 for details.
         """
         loss = super().compute_loss(model, inputs, return_outputs)
-        if is_transformers_version_equal_to_4_46() and kwargs.pop("num_items_in_batch", False):
+        if is_transformers_version_equal_to_4_46() and kwargs.get("num_items_in_batch"):
             if return_outputs:
-                return (loss[0] / self.args.gradient_accumulation_steps, *loss[1:])
+                loss = (loss[0] / self.args.gradient_accumulation_steps, *loss[1:])
             else:
-                return loss / self.args.gradient_accumulation_steps
+                loss = loss / self.args.gradient_accumulation_steps
 
         return loss
 
